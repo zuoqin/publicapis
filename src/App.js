@@ -4,20 +4,24 @@ import 'react-bootstrap-table';
 import './App.css';
 import APITable from'./APITable'
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
+
 class App extends Component {
   constructor(){
     super();
     this.state={ items: [], alive: true}
   }
 
-  componentDidMount(){
+
+  fetchData(){
     var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
     targetUrl = 'https://api.publicapis.org/health-check'
 
     fetch(proxyUrl + targetUrl)
-    .then(results => {
-      return results.json();
-    }).then( data => {
+    .then(response => response.json())
+    .then( data => {
       this.setState({
         ...this.state,
         alive: data.alive
@@ -33,9 +37,19 @@ class App extends Component {
             items: data.entries
           })
         })
-
       }
     })
+    .catch(error => {
+      this.setState({
+        ...this.state,
+        alive: false
+    })
+    })
+  }
+
+
+  componentDidMount(){
+    setTimeout(function() { this.fetchData(); }.bind(this), 10);
   }
   render() {
     if(this.state.alive){

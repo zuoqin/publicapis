@@ -46,7 +46,7 @@ class APITable extends Component {
       else{
         return (
           <div>
-            <input type="text" className="form-control" placeholder="Search..." value={this.state.value} onChange={this.handleChange} />
+            <input type="text" className="form-control" placeholder="Search by API, Description, Category..." value={this.state.value} onChange={this.handleChange} />
 
             <BootstrapTable options={ this.options } data={ items }>
                 <TableHeaderColumn dataField='id' isKey={ true } hidden={ true }>ID</TableHeaderColumn>
